@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:intl/intl.dart';
 import 'package:shopping_mall_dart/models/model_Product.dart';
-
 import '../cart.dart';
 
 class ShoppingMall {
@@ -32,7 +30,6 @@ class ShoppingMall {
       case '4':
         exitProgram();
         break;
-
       case '6':
         removeFromCart();
         break;
@@ -151,6 +148,7 @@ class ShoppingMall {
     }
   }
 
+  // 프로그램 종료 [4]
   void exitProgram() {
     bool exitConfirmed = false;
 
