@@ -5,9 +5,15 @@ class Cart {
   int totalPrice = 0;
 
   void addProduct(Product product, int count) {
-    var existhing = cartItems.where(
-      (cartList) => cartList.name == product.name,
-    );
-    cartItems.add(product);
+    var existing = cartItems.where((cartList) => cartList.name == product.name);
+
+    if (existing.isEmpty) {
+      cartItems.add(Product(product.name, product.price * count, count));
+    } else {
+      var item = existing.first;
+      item.itemCount += count;
+      item.price += product.price * count;
+      totalPrice = item.price;
+    }
   }
 }
