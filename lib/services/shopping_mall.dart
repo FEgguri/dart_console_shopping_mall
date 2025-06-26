@@ -1,16 +1,20 @@
 import 'dart:io';
-import 'package:shopping_mall_dart/utils/formatter.dart';
+
 import 'package:intl/intl.dart';
 import 'package:shopping_mall_dart/models/model_Product.dart';
 
+import '../cart.dart';
+
 class ShoppingMall {
   List<Product> products; // = [];
-  List<Product> cart = []; // 장바구니
-  int totalPrice = 0; // 장바구니에 담긴 상품의 총 가격
+  late Cart cart; // 장바구니
+  String formatCurrency(int price) {
+    return NumberFormat('#,###').format(price);
+  }
 
   void home() {
     print(
-      '[1] 상품 목록 보기 / [2] 장바구니에 담기 / [3] 장바구니에 담긴 상품의 총 가격 보기 / [4] 프로그램 종료',
+      '[1] 상품 목록 보기 / [2] 장바구니에 담기 / [3] 장바구니에 담긴 상품의 총 가격 보기 / [4] 프로그램 종료 / [6] 장바구니 비우기',
     );
     var inputStringValue = stdin.readLineSync();
 
@@ -41,7 +45,8 @@ class ShoppingMall {
 
   // 생성자에서 상품 목록 초기화
   ShoppingMall()
-    : products = [
+    : cart = Cart(),
+      products = [
         Product('Stun Gun', 2010, 5),
         Product('Lightsaber', 400, 5),
         Product('No Brand Dark Chocolate', 4000000, 5),
@@ -103,8 +108,8 @@ class ShoppingMall {
         addToCart();
       } else {
         var price = products.where((e) => e.name == name).first.price;
-        cart.add(Product(name, price * count, count));
-        totalPrice += price * count; //장바구니 총 가격
+        cart.cartItems.add(Product(name, price * count, count));
+        cart.totalPrice += price * count; //장바구니 총 가격
         print('장바구니에 $name이 $count개 담겼습니다.');
       }
     } else {
@@ -117,30 +122,31 @@ class ShoppingMall {
 
   //장바구니에 담긴 상품의 총 가격 보기 [3]
   void showTotal() {
-    if (cart.isEmpty) {
+    if (cart.cartItems.isEmpty) {
       print("장바구니가 비어 있습니다. 상품을 먼저 담아주세요.");
       home();
       return;
     } else {
-      String totalItems = cart.map((e) => '${e.name}').join(', ');
+      String totalItems = cart.cartItems.map((e) => '${e.name}').join(', ');
 
       print(
-        '장바구니에 담긴 상품은 $totalItems이며  총 가격은 ${formatCurrency(totalPrice)}원입니다.',
+        '장바구니에 담긴 상품은 $totalItems이며  총 가격은 ${formatCurrency(cart.totalPrice)}원입니다.',
       );
       home();
     }
   }
 
   //장바구니 비우기 [6]
+
   void removeFromCart() {
-    if (cart.isEmpty) {
+    if (cart.cartItems.isEmpty) {
       print("장바구니가 비어 있습니다. 상품을 먼저 담아주세요.");
       home();
       return;
     } else {
       print("장바구니를 초기화합니다.");
-      cart.clear(); // 장바구니 비우기
-      totalPrice = 0; // 총 가격 초기화
+      cart.cartItems.clear(); // 장바구니 비우기
+      cart.totalPrice = 0; // 총 가격 초기화
       home();
     }
   }
