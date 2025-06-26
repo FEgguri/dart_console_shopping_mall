@@ -1,6 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:shopping_mall_dart/shopping_mall_dart.dart'
-    as shopping_mall_dart;
 import 'dart:io';
 
 // 첫 생성 2025.06.24 이영상
