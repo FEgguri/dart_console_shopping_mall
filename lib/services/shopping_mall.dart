@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:intl/intl.dart';
 import 'package:shopping_mall_dart/models/model_Product.dart';
@@ -48,7 +49,7 @@ class ShoppingMall {
         Product('Lightsaber', 400, 5),
         Product('No Brand Dark Chocolate', 4000000, 5),
         Product('Dress Shirt', 24430, 5),
-        Product('Apgujeong Hyundai Apartment', 70000, 5),
+        Product('현대 아파트', 70000, 5),
         Product('Lecture Room', 356720, 5),
         Product('Caramel Popcorn', 8000, 5),
       ];
@@ -81,8 +82,8 @@ class ShoppingMall {
 
   //장바구니담기 [2]
   void addToCart() {
-    print('장바구니에 담을 상품의 이름과 수량을 입력해주세요. (ex. Lightsaber 5) [4]프로그램 종료');
-    var inputItem = stdin.readLineSync();
+    print('장바구니에 담을 상품의 이름과 수량을 입력해주세요. (ex. Lightsaber 5)');
+    var inputItem = stdin.readLineSync(encoding: utf8);
     // if (int.parse(inputItem) == 4 ) {
     //   exitProgram();
     // }
@@ -95,6 +96,7 @@ class ShoppingMall {
       var existItem = products.where((e) => e.name == name); //상품이름 존재하는지
 
       if (existItem.isEmpty) {
+        print(name);
         print('해당 상품이 존재 하지않습니다. 다시 입력해주세요.');
         addToCart();
       } else if (count == null) {
